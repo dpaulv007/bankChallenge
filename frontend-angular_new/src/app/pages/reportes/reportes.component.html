@@ -1,0 +1,62 @@
+<div class="card">
+  <h2>Reportes</h2>
+  <div class="grid">
+    <div class="col-4">
+      <label>Cliente</label>
+      <select [(ngModel)]="clienteId" name="clienteId">
+        <option [ngValue]="null">-- Seleccionar --</option>
+        <option *ngFor="let c of clientes" [ngValue]="c.id">
+          {{ c.nombre || c.nombreCompleto }} ({{ c.identificacion }})
+        </option>
+      </select>
+    </div>
+    <div class="col-3">
+      <label>Desde</label><input type="date" [(ngModel)]="desde" name="desde" />
+    </div>
+    <div class="col-3">
+      <label>Hasta</label><input type="date" [(ngModel)]="hasta" name="hasta" />
+    </div>
+    <div class="col-2" style="align-self: end">
+      <button class="ok" (click)="ver()" [disabled]="!clienteId">Ver</button>
+    </div>
+    <div class="col-2" style="align-self: end">
+      <button class="alt" (click)="descargar()" [disabled]="!clienteId">Descargar PDF</button>
+    </div>
+  </div>
+  <div class="err" *ngIf="err">{{ err }}</div>
+</div>
+
+<div class="card" *ngIf="data">
+  <h3 style="margin: 0 0 8px">Resumen</h3>
+  <div class="grid">
+    <div class="col-3">
+      <b>Cliente:</b> {{ data.cliente?.nombre || data.cliente?.nombreCompleto }}
+    </div>
+    <div class="col-3"><b>Identificación:</b> {{ data.cliente?.identificacion }}</div>
+    <div class="col-3"><b>Rango:</b> {{ desde }} → {{ hasta }}</div>
+  </div>
+
+  <div *ngFor="let c of data.cuentas" style="margin-top: 14px">
+    <h4 style="margin: 0 0 6px">Cuenta {{ c.numero }} ({{ c.tipo }})</h4>
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Tipo</th>
+          <th>Valor</th>
+          <th>Saldo</th>
+          <th>Ref</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let m of c.movimientos">
+          <td>{{ m.fecha | date: 'yyyy-MM-dd HH:mm' }}</td>
+          <td>{{ m.tipo }}</td>
+          <td>{{ m.valor | number: '1.2-2' }}</td>
+          <td>{{ m.saldo | number: '1.2-2' }}</td>
+          <td>{{ m.referencia }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: banking_db
+    env_file: .env
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+
+  api:
+    build: ./backend/challenge
+    container_name: banking_api
+    depends_on:
+      - db
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/banking
+      DB_USER: ${POSTGRES_USER}
+      DB_PASS: ${POSTGRES_PASSWORD}
+      TZ: America/Guayaquil
+    ports:
+      - "8080:8080"
+
+  web:
+    build: ./frontend-angular_new
+    container_name: banking_web
+    depends_on:
+      - api
+    ports:
+      - "4200:80"   
+volumes:
+  pgdata:

@@ -1,0 +1,71 @@
+<div class="card">
+  <h2>Cuentas</h2>
+  <form (ngSubmit)="submit()" class="grid" autocomplete="off">
+    <div class="col-3">
+      <label>Número</label><input [(ngModel)]="form.numero" name="numero" required />
+    </div>
+    <div class="col-3">
+      <label>Tipo</label>
+      <select [(ngModel)]="form.tipo" name="tipo">
+        <option value="Ahorro">Ahorro</option>
+        <option value="Corriente">Corriente</option>
+      </select>
+    </div>
+    <div class="col-3">
+      <label>Saldo Inicial</label
+      ><input type="number" [(ngModel)]="form.saldoInicial" name="saldoInicial" />
+    </div>
+    <div class="col-3">
+      <label>Estado</label>
+      <select [(ngModel)]="form.estado" name="estado">
+        <option [ngValue]="true">Activa</option>
+        <option [ngValue]="false">Inactiva</option>
+      </select>
+    </div>
+    <div class="col-6">
+      <label>Cliente</label>
+      <select [(ngModel)]="form.clienteId" name="clienteId">
+        <option [ngValue]="0">-- Seleccionar --</option>
+        <option *ngFor="let c of clientes" [ngValue]="c.id">
+          {{ c.nombre || c.nombreCompleto }} ({{ c.identificacion }})
+        </option>
+      </select>
+    </div>
+    <div class="col-6" style="align-self: end">
+      <button class="ok" type="submit">{{ editId ? 'Actualizar' : 'Crear' }}</button>
+    </div>
+  </form>
+  <div class="err" *ngIf="err">{{ err }}</div>
+</div>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>Número</th>
+        <th>Tipo</th>
+        <th>Saldo</th>
+        <th>Cliente</th>
+        <th>Estado</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of rows">
+        <td>{{ c.numero }}</td>
+        <td>{{ c.tipo }}</td>
+        <td>{{ c.saldo ?? c.saldoInicial | number: '1.2-2' }}</td>
+        <td>#{{ c.clienteId }}</td>
+        <td>
+          <span class="badge" [class.ok]="c.estado" [class.off]="!c.estado">{{
+            c.estado ? 'Activa' : 'Inactiva'
+          }}</span>
+        </td>
+        <td class="row-actions">
+          <button class="alt" (click)="edit(c)">Editar</button>
+          <button class="warn" (click)="del(c.id)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

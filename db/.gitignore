@@ -1,0 +1,13 @@
+# Database data (if any gets generated locally)
+data/
+*.db
+*.sqlite
+*.sqlite3
+
+# Backup files
+*.bak
+*.backup
+*.dump
+
+# Logs
+*.log

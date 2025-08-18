@@ -1,0 +1,30 @@
+# Backend
+backend/challenge/target/
+backend/challenge/.mvn/
+backend/challenge/mvnw
+backend/challenge/mvnw.cmd
+
+# Frontend
+frontend-angular_new/node_modules/
+frontend-angular_new/dist/
+frontend-angular_new/.angular/
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment
+.env.local
+.env.production
+
+# Reports
+report.json
+report.pdf
