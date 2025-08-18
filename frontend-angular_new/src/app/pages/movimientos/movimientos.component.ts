@@ -12,6 +12,7 @@ import { ApiService } from 'src/app/core/services/api.service';
 })
 export class MovimientosComponent implements OnInit {
   constructor(public api: ApiService) {}
+  cuentas: any[] = [];
   cuentaId: number | null = null;
   monto = 0;
   ref = '';
@@ -25,7 +26,12 @@ export class MovimientosComponent implements OnInit {
   rows: any[] = [];
 
   ngOnInit() {
+    this.loadCuentas();
     this.load();
+  }
+  
+  loadCuentas() {
+    this.api.listarCuentas().subscribe((c) => (this.cuentas = c));
   }
   load() {
     this.api.listarMovimientos().subscribe((r) => (this.rows = r));

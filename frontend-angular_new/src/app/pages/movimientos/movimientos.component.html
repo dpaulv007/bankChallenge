@@ -3,7 +3,13 @@
 
   <div class="grid">
     <div class="col-3">
-      <label>Cuenta ID</label><input type="number" [(ngModel)]="cuentaId" name="cuentaId" />
+      <label>Cuenta</label>
+      <select [(ngModel)]="cuentaId" name="cuentaId">
+        <option [ngValue]="null">-- Seleccionar --</option>
+        <option *ngFor="let c of cuentas" [ngValue]="c.id">
+          {{ c.numero }} - {{ c.tipo }} (Saldo: {{ c.saldo | number:'1.2-2' }})
+        </option>
+      </select>
     </div>
     <div class="col-3">
       <label>Monto</label><input type="number" [(ngModel)]="monto" name="monto" />
@@ -23,12 +29,22 @@
 
   <div class="grid">
     <div class="col-3">
-      <label>Cuenta Origen</label
-      ><input type="number" [(ngModel)]="transfer.origenId" name="origenId" />
+      <label>Cuenta Origen</label>
+      <select [(ngModel)]="transfer.origenId" name="origenId">
+        <option [ngValue]="null">-- Seleccionar --</option>
+        <option *ngFor="let c of cuentas" [ngValue]="c.id">
+          {{ c.numero }} - {{ c.tipo }} ({{ c.saldo | number:'1.2-2' }})
+        </option>
+      </select>
     </div>
     <div class="col-3">
-      <label>Cuenta Destino</label
-      ><input type="number" [(ngModel)]="transfer.destinoId" name="destinoId" />
+      <label>Cuenta Destino</label>
+      <select [(ngModel)]="transfer.destinoId" name="destinoId">
+        <option [ngValue]="null">-- Seleccionar --</option>
+        <option *ngFor="let c of cuentas" [ngValue]="c.id">
+          {{ c.numero }} - {{ c.tipo }} ({{ c.saldo | number:'1.2-2' }})
+        </option>
+      </select>
     </div>
     <div class="col-3">
       <label>Monto</label><input type="number" [(ngModel)]="transfer.monto" name="tMonto" />

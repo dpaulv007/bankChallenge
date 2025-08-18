@@ -1,5 +1,6 @@
 package com.pv.challenge.web;
 
+import com.pv.challenge.dto.MovimientoDtos;
 import com.pv.challenge.entity.Movimiento;
 import com.pv.challenge.repo.MovimientoRepository;
 import com.pv.challenge.service.MovimientoService;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/movimientos")
@@ -21,22 +23,23 @@ public class MovimientoController {
     }
 
     @GetMapping
-    public List<Movimiento> listar(@RequestParam(required = false) Long cuentaId) {
-        return cuentaId == null ? movRepo.findAll() : movRepo.findByCuenta_Id(cuentaId);
+    public List<MovimientoDtos.MovimientoResponse> listar(@RequestParam(required = false) Long cuentaId) {
+        List<Movimiento> movimientos = cuentaId == null ? movRepo.findAll() : movRepo.findByCuenta_Id(cuentaId);
+        return movimientos.stream().map(MovimientoDtos.MovimientoResponse::new).collect(Collectors.toList());
     }
 
     @PostMapping("/deposito")
-    public Movimiento depositar(@RequestParam Long cuentaId,
+    public MovimientoDtos.MovimientoResponse depositar(@RequestParam Long cuentaId,
                                 @RequestParam BigDecimal monto,
                                 @RequestParam(required = false) String ref) {
-        return service.depositar(cuentaId, monto, ref);
+        return new MovimientoDtos.MovimientoResponse(service.depositar(cuentaId, monto, ref));
     }
 
     @PostMapping("/retiro")
-    public Movimiento retirar(@RequestParam Long cuentaId,
+    public MovimientoDtos.MovimientoResponse retirar(@RequestParam Long cuentaId,
                               @RequestParam BigDecimal monto,
                               @RequestParam(required = false) String ref) {
-        return service.retirar(cuentaId, monto, ref);
+        return new MovimientoDtos.MovimientoResponse(service.retirar(cuentaId, monto, ref));
     }
 
     @PostMapping("/transferencia")

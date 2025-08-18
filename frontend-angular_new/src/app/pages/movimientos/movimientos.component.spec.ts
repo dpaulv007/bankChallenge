@@ -6,6 +6,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 type ApiMock = {
   listarMovimientos: jest.Mock;
+  listarCuentas: jest.Mock;
   depositar: jest.Mock;
   retirar: jest.Mock;
   transferir: jest.Mock;
@@ -19,6 +20,7 @@ describe('MovimientosComponent', () => {
   beforeEach(async () => {
     api = {
       listarMovimientos: jest.fn(),
+      listarCuentas: jest.fn(),
       depositar: jest.fn(),
       retirar: jest.fn(),
       transferir: jest.fn(),
@@ -34,14 +36,18 @@ describe('MovimientosComponent', () => {
     component = fixture.componentInstance;
   });
 
-  it('debe crearse y cargar movimientos en ngOnInit()', () => {
-    const mock = [{ id: 1, monto: 100 }];
-    api.listarMovimientos.mockReturnValue(of(mock));
+  it('debe crearse y cargar cuentas y movimientos en ngOnInit()', () => {
+    const mockMovimientos = [{ id: 1, monto: 100 }];
+    const mockCuentas = [{ id: 1, numero: '123', tipo: 'Ahorro' }];
+    api.listarMovimientos.mockReturnValue(of(mockMovimientos));
+    api.listarCuentas.mockReturnValue(of(mockCuentas));
 
     fixture.detectChanges();
 
     expect(api.listarMovimientos).toHaveBeenCalled();
-    expect(component.rows).toEqual(mock);
+    expect(api.listarCuentas).toHaveBeenCalled();
+    expect(component.rows).toEqual(mockMovimientos);
+    expect(component.cuentas).toEqual(mockCuentas);
   });
 
   it('load() debe llenar rows con movimientos', () => {

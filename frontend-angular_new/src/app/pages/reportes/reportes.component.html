@@ -30,31 +30,34 @@
   <h3 style="margin: 0 0 8px">Resumen</h3>
   <div class="grid">
     <div class="col-3">
-      <b>Cliente:</b> {{ data.cliente?.nombre || data.cliente?.nombreCompleto }}
+      <b>Cliente:</b> {{ data.clienteNombre }}
     </div>
-    <div class="col-3"><b>Identificación:</b> {{ data.cliente?.identificacion }}</div>
-    <div class="col-3"><b>Rango:</b> {{ desde }} → {{ hasta }}</div>
+    <div class="col-3"><b>Rango:</b> {{ data.desde }} → {{ data.hasta }}</div>
+    <div class="col-3"><b>Total Créditos:</b> {{ data.totalCreditos | number: '1.2-2' }}</div>
+    <div class="col-3"><b>Total Débitos:</b> {{ data.totalDebitos | number: '1.2-2' }}</div>
   </div>
 
-  <div *ngFor="let c of data.cuentas" style="margin-top: 14px">
-    <h4 style="margin: 0 0 6px">Cuenta {{ c.numero }} ({{ c.tipo }})</h4>
+  <div style="margin-top: 14px">
+    <h4 style="margin: 0 0 6px">Movimientos</h4>
     <table>
       <thead>
         <tr>
           <th>Fecha</th>
+          <th>Cuenta</th>
           <th>Tipo</th>
-          <th>Valor</th>
-          <th>Saldo</th>
-          <th>Ref</th>
+          <th>Saldo Inicial</th>
+          <th>Movimiento</th>
+          <th>Saldo Final</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let m of c.movimientos">
-          <td>{{ m.fecha | date: 'yyyy-MM-dd HH:mm' }}</td>
-          <td>{{ m.tipo }}</td>
-          <td>{{ m.valor | number: '1.2-2' }}</td>
-          <td>{{ m.saldo | number: '1.2-2' }}</td>
-          <td>{{ m.referencia }}</td>
+        <tr *ngFor="let item of data.items">
+          <td>{{ item.fecha | date: 'yyyy-MM-dd HH:mm' }}</td>
+          <td>{{ item.numeroCuenta }} ({{ item.tipoCuenta }})</td>
+          <td>{{ item.movimiento > 0 ? 'CRÉDITO' : 'DÉBITO' }}</td>
+          <td>{{ item.saldoInicial | number: '1.2-2' }}</td>
+          <td>{{ item.movimiento | number: '1.2-2' }}</td>
+          <td>{{ item.saldoDisponible | number: '1.2-2' }}</td>
         </tr>
       </tbody>
     </table>

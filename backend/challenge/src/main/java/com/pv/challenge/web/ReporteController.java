@@ -18,7 +18,7 @@ public class ReporteController {
   private final ReporteService service;
   public ReporteController(ReporteService service) { this.service = service; }
 
-  @GetMapping
+  @GetMapping("/json")
   public ReporteResponseDtos json(
       @RequestParam Long clienteId,
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
