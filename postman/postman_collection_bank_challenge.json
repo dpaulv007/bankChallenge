@@ -1,8 +1,8 @@
 {
   "info": {
-    "name": "Bank Challenge API",
-    "_postman_id": "7f6f7a0c-51b1-4a2c-9a0c-collection",
-    "description": "Colección de endpoints para el reto (clientes, cuentas, movimientos, reportes).",
+    "name": "Bank Challenge API - Fixed",
+    "_postman_id": "7f6f7a0c-51b1-4a2c-9a0c-collection-fixed",
+    "description": "Colección corregida de endpoints para el reto bancario.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -31,7 +31,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Jose Lema\",\n  \"genero\": \"M\",\n  \"edad\": 30,\n  \"identificacion\": \"0101\",\n  \"direccion\": \"Otavalo sn y principal\",\n  \"telefono\": \"098254785\",\n  \"contrasena\": \"1234\",\n  \"estado\": true\n}"
+              "raw": "{\n  \"nombre\": \"Jose Lema\",\n  \"genero\": \"Masculino\",\n  \"edad\": 30,\n  \"identificacion\": \"1234567891\",\n  \"direccion\": \"Otavalo sn y principal\",\n  \"telefono\": \"098254785\",\n  \"clienteId\": \"jose123\",\n  \"contrasena\": \"1234\",\n  \"estado\": true\n}"
             }
           }
         },
@@ -56,14 +56,14 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/api/clientes/{id}",
+              "raw": "{{baseUrl}}/api/clientes/{{clienteId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
                 "clientes",
-                "{{id}}"
+                "{{clienteId}}"
               ]
             }
           }
@@ -79,19 +79,19 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/clientes/{id}",
+              "raw": "{{baseUrl}}/api/clientes/{{clienteId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
                 "clientes",
-                "{{id}}"
+                "{{clienteId}}"
               ]
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"nombre\": \"Jose Lema\",\n  \"genero\": \"M\",\n  \"edad\": 31,\n  \"identificacion\": \"0101\",\n  \"direccion\": \"Nueva direccion\",\n  \"telefono\": \"099999999\",\n  \"contrasena\": \"1234\",\n  \"estado\": true\n}"
+              "raw": "{\n  \"nombre\": \"Jose Lema Actualizado\",\n  \"genero\": \"Masculino\",\n  \"edad\": 31,\n  \"identificacion\": \"1234567891\",\n  \"direccion\": \"Nueva direccion\",\n  \"telefono\": \"099999999\",\n  \"clienteId\": \"jose123\",\n  \"contrasena\": \"1234\",\n  \"estado\": true\n}"
             }
           }
         },
@@ -100,14 +100,14 @@
           "request": {
             "method": "DELETE",
             "url": {
-              "raw": "{{baseUrl}}/api/clientes/{id}",
+              "raw": "{{baseUrl}}/api/clientes/{{clienteId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
                 "clientes",
-                "{{id}}"
+                "{{clienteId}}"
               ]
             }
           }
@@ -164,19 +164,15 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/api/cuentas?clienteId={clienteId}",
+              "raw": "{{baseUrl}}/api/cuentas/cliente/{{clienteId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
-                "cuentas"
-              ],
-              "query": [
-                {
-                  "key": "clienteId",
-                  "value": "{{clienteId}}"
-                }
+                "cuentas",
+                "cliente",
+                "{{clienteId}}"
               ]
             }
           }
@@ -186,15 +182,42 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/api/cuentas/{id}",
+              "raw": "{{baseUrl}}/api/cuentas/{{cuentaId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
                 "cuentas",
-                "{{id}}"
+                "{{cuentaId}}"
               ]
+            }
+          }
+        },
+        {
+          "name": "Actualizar cuenta",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cuentas/{{cuentaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cuentas",
+                "{{cuentaId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numero\": \"478758\",\n  \"tipo\": \"Corriente\",\n  \"estado\": true,\n  \"clienteId\": 1\n}"
             }
           }
         },
@@ -203,14 +226,14 @@
           "request": {
             "method": "DELETE",
             "url": {
-              "raw": "{{baseUrl}}/api/cuentas/{id}",
+              "raw": "{{baseUrl}}/api/cuentas/{{cuentaId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
                 "cuentas",
-                "{{id}}"
+                "{{cuentaId}}"
               ]
             }
           }
@@ -221,11 +244,49 @@
       "name": "Movimientos",
       "item": [
         {
+          "name": "Listar movimientos",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/movimientos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "movimientos"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Movimientos por cuenta",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/movimientos?cuentaId={{cuentaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "movimientos"
+              ],
+              "query": [
+                {
+                  "key": "cuentaId",
+                  "value": "{{cuentaId}}"
+                }
+              ]
+            }
+          }
+        },
+        {
           "name": "Depósito",
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{baseUrl}}/api/movimientos/deposito?cuentaId={cuentaId}&monto=100&ref=demo",
+              "raw": "{{baseUrl}}/api/movimientos/deposito?cuentaId={{cuentaId}}&monto=100&ref=demo",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -256,7 +317,7 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{baseUrl}}/api/movimientos/retiro?cuentaId={cuentaId}&monto=50&ref=demo",
+              "raw": "{{baseUrl}}/api/movimientos/retiro?cuentaId={{cuentaId}}&monto=50&ref=demo",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -287,22 +348,22 @@
           "request": {
             "method": "POST",
             "url": {
-              "raw": "{{baseUrl}}/api/movimientos/transferir?idOrigen={idOrigen}&idDestino={idDestino}&monto=10&ref=mov",
+              "raw": "{{baseUrl}}/api/movimientos/transferencia?origenId={{idOrigen}}&destinoId={{idDestino}}&monto=10&ref=transferencia",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
                 "movimientos",
-                "transferir"
+                "transferencia"
               ],
               "query": [
                 {
-                  "key": "idOrigen",
+                  "key": "origenId",
                   "value": "{{idOrigen}}"
                 },
                 {
-                  "key": "idDestino",
+                  "key": "destinoId",
                   "value": "{{idDestino}}"
                 },
                 {
@@ -311,7 +372,7 @@
                 },
                 {
                   "key": "ref",
-                  "value": "mov"
+                  "value": "transferencia"
                 }
               ]
             }
@@ -327,13 +388,14 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/api/reportes?clienteId={clienteId}&desde=2022-02-01&hasta=2022-02-28",
+              "raw": "{{baseUrl}}/api/reportes/json?clienteId={{clienteId}}&desde=2025-01-01&hasta=2025-12-31",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
-                "reportes"
+                "reportes",
+                "json"
               ],
               "query": [
                 {
@@ -342,28 +404,29 @@
                 },
                 {
                   "key": "desde",
-                  "value": "2022-02-01"
+                  "value": "2025-01-01"
                 },
                 {
                   "key": "hasta",
-                  "value": "2022-02-28"
+                  "value": "2025-12-31"
                 }
               ]
             }
           }
         },
         {
-          "name": "Estado de cuenta con PDF (base64)",
+          "name": "Estado de cuenta PDF",
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/api/reportes?clienteId={clienteId}&desde=2022-02-01&hasta=2022-02-28&incluirPdf=true",
+              "raw": "{{baseUrl}}/api/reportes/pdf?clienteId={{clienteId}}&desde=2025-01-01&hasta=2025-12-31",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
                 "api",
-                "reportes"
+                "reportes",
+                "pdf"
               ],
               "query": [
                 {
@@ -372,15 +435,11 @@
                 },
                 {
                   "key": "desde",
-                  "value": "2022-02-01"
+                  "value": "2025-01-01"
                 },
                 {
                   "key": "hasta",
-                  "value": "2022-02-28"
-                },
-                {
-                  "key": "incluirPdf",
-                  "value": "true"
+                  "value": "2025-12-31"
                 }
               ]
             }
